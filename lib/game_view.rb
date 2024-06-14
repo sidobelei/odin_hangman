@@ -31,8 +31,7 @@ class GameView
         puts "\n"
         @word_display.each do |letter|
             print " " + letter 
-        end
-        puts "\n" 
+        end 
     end
 
     def update_display(guess, mistakes)

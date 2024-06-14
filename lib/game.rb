@@ -1,14 +1,19 @@
+require_relative "./player.rb"
+require_relative "./game_view.rb" 
+
 class Game
-    attr_accessor :word_array, :guesses
+    attr_accessor :word_array, :mistakes, :game_over, :game_status
 
     def initialize(dictionary_file)
         #@save_file = get_save
-        #@player
+        @player = Player.new
+        @mistakes = 0
         @word_length = (5..12).to_a
-        @guesses = 8
         @word_array = {}
         @word = get_word(dictionary_file)
+        @board = GameView.new(@word)
         @game_over = false
+        @game_status = "lose"
     end
 
     def get_word(file)
@@ -43,7 +48,26 @@ class Game
             end
             return correct_guess
         else
+            self.mistakes += 1
             return nil
         end
+    end
+
+    def play
+        until game_over
+            @board.display
+            puts "   Previous Guesses: #{@player.inputs}" 
+            guess = @player.make_guess
+            checked_guess = check_guess(guess)
+            @board.update_display(checked_guess, @mistakes)
+            if mistakes == 6
+                self.game_over = true
+            elsif @board.word_display == @word.split("")
+                 self.game_over = true
+                 self.game_status = "win"
+            end
+        end
+        @board.display
+        puts "\n\nYou #{@game_status}! The word was #{@word.upcase}."
     end
 end
