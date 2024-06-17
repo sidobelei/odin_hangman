@@ -1,7 +1,9 @@
-require_relative "./player.rb"
-require_relative "./game_view.rb" 
+require_relative "player"
+require_relative "game_view"
+require_relative "file_handler"
 
 class Game
+    include FileHandler 
     attr_accessor :word_array, :mistakes, :game_over, :game_status
 
     def initialize(dictionary_file)
@@ -58,6 +60,10 @@ class Game
             @board.display
             puts "   Previous Guesses: #{@player.inputs}" 
             guess = @player.make_guess
+            if guess == "save"
+                create_save(self)
+                return puts "\nSaved Sucessfully"
+            end
             checked_guess = check_guess(guess)
             @board.update_display(checked_guess, @mistakes)
             if mistakes == 6
@@ -69,5 +75,17 @@ class Game
         end
         @board.display
         puts "\n\nYou #{@game_status}! The word was #{@word.upcase}."
+    end
+
+    def to_json(*args)
+        {
+            'player' => @player,
+            'mistakes' => @mistakes,
+            'word_array' => @word_array,
+            'word' => @word,
+            'board' => @board,
+            'game_over' => @game_over,
+            'game_status' => @game_status
+        }.to_json
     end
 end

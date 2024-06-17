@@ -65,4 +65,11 @@ class GameView
             end
         end
     end
+
+    def to_json(*args)
+        {
+            'hangman_array' => @hangman_array,
+            'word_display' => @word_display
+        }.to_json
+    end
 end
