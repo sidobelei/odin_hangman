@@ -1,6 +1,6 @@
 class GameView
     attr_accessor :word_display, :hangman_array
-    def initialize(word)
+    def initialize(word = nil)
         @hangman_array = [
             ["    _____"],
             ["   |     |"],
@@ -10,7 +10,7 @@ class GameView
             ["   |"],
             [" -----"]
         ]
-        @word_display = Array.new(word.length, "_")
+        @word_display = Array.new(word.length, "_") unless word.nil?
         @hangman_parts = {
             :"head" => ["o", 2, 1],
             :"torso" => ["|", 3, 2],
@@ -72,4 +72,12 @@ class GameView
             'word_display' => @word_display
         }.to_json
     end
+
+    def from_json(args)
+        args.each do |key, value|
+            self.instance_variable_set("@#{key}", value)
+        end
+        return self
+    end
+
 end

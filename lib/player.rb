@@ -24,4 +24,11 @@ class Player
             'inputs' => @inputs
         }.to_json
     end
+
+    def from_json(states)
+        states.each do |key, value|
+            self.instance_variable_set("@#{key}", value)
+        end
+        return self
+    end
 end

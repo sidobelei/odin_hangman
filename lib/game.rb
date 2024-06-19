@@ -7,15 +7,32 @@ class Game
     attr_accessor :word_array, :mistakes, :game_over, :game_status
 
     def initialize(dictionary_file)
-        #@save_file = get_save
-        @player = Player.new
-        @mistakes = 0
         @word_length = (5..12).to_a
-        @word_array = {}
-        @word = get_word(dictionary_file)
-        @board = GameView.new(@word)
-        @game_over = false
-        @game_status = "lose"
+        print "Do you want to load a save file? "
+        answer = gets.chomp.strip.downcase
+        if answer == "yes" || answer == "y"
+            file_found = false
+            file = nil
+            until file_found  
+                print "Please enter a file name: "
+                input = SAVE_DIRECTORY + gets.chomp
+                if File.exist?(input)
+                    file = input
+                    file_found = true
+                else
+                    puts "\nFile does not exist, try again."
+                end
+            end
+            get_save(file)
+        else
+            @player = Player.new
+            @mistakes = 0
+            @word_array = {}
+            @word = get_word(dictionary_file)
+            @board = GameView.new(@word)
+            @game_over = false
+            @game_status = "lose"
+        end
     end
 
     def get_word(file)
@@ -40,6 +57,7 @@ class Game
                 self.word_array[letter.to_sym].push(index)
             end
         end
+        p word_array
     end
 
     def check_guess(guess)
@@ -75,6 +93,21 @@ class Game
         end
         @board.display
         puts "\n\nYou #{@game_status}! The word was #{@word.upcase}."
+    end
+
+    def get_save(file_name)
+        game_states = load_save(SAVE_DIRECTORY + file_name)
+        game_states.each do |key, value|
+            if key == "player"
+                new_player = Player.new
+                value = new_player.from_json(value)
+            elsif key == "board"
+                new_board = GameView.new
+                value = new_board.from_json(value)
+            end
+            self.instance_variable_set("@#{key}", value)
+        end
+        self.word_array = word_array.transform_keys(&:to_sym) 
     end
 
     def to_json(*args)
