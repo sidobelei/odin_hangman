@@ -3,10 +3,13 @@ require_relative "game_view"
 require_relative "file_handler"
 
 class Game
-    include FileHandler 
+    include FileHandler
+
+    DICTIONARY_FILE = "../data/google-10000-english-no-swears.txt" 
+    
     attr_accessor :word_array, :mistakes, :game_over, :game_status
 
-    def initialize(dictionary_file)
+    def initialize
         @word_length = (5..12).to_a
         print "Do you want to load a save file? "
         answer = gets.chomp.strip.downcase
@@ -28,7 +31,7 @@ class Game
             @player = Player.new
             @mistakes = 0
             @word_array = {}
-            @word = get_word(dictionary_file)
+            @word = get_word(DICTIONARY_FILE)
             @board = GameView.new(@word)
             @game_over = false
             @game_status = "lose"
