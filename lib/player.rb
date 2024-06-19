@@ -10,13 +10,18 @@ class Player
             print "\nYour Guess: "
             input = gets.chomp.strip.downcase
             if ("a".."z").to_a.include?(input) || input == "save"
+                if inputs.include?(input)
+                    puts "You've already guessed \"#{input}\". Make another guess."
+                    next
+                else 
                     guess = input
                     if guess != "save"
                         self.inputs.push(guess)
                     end
+                end
             end 
         end
-    return guess
+        return guess
     end
 
     def to_json(*args)
