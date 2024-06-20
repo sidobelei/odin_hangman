@@ -1,7 +1,7 @@
 require "json"
 
 module FileHandler
-    SAVE_DIRECTORY = "../data/saves/"
+    SAVE_DIRECTORY = "./data/saves/"
 
     def load_save(game_file)
         string = File.read(game_file)

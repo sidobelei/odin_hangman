@@ -5,7 +5,7 @@ require_relative "file_handler"
 class Game
     include FileHandler
 
-    DICTIONARY_FILE = "../data/google-10000-english-no-swears.txt" 
+    DICTIONARY_FILE = "./data/google-10000-english-no-swears.txt" 
     
     attr_accessor :word_array, :mistakes, :game_over, :game_status
 
@@ -99,7 +99,7 @@ class Game
     end
 
     def get_save(file_name)
-        game_states = load_save(SAVE_DIRECTORY + file_name)
+        game_states = load_save(file_name)
         game_states.each do |key, value|
             if key == "player"
                 new_player = Player.new
