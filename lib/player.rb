@@ -1,5 +1,6 @@
 class Player 
     attr_accessor :inputs
+
     def initialize
         @inputs = []
     end

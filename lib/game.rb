@@ -3,10 +3,10 @@ require_relative "game_view"
 require_relative "file_handler"
 
 class Game
-    include FileHandler
-
     DICTIONARY_FILE = "./data/google-10000-english-no-swears.txt" 
     
+    include FileHandler
+
     attr_accessor :word_array, :mistakes, :game_over, :game_status
 
     def initialize

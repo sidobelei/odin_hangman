@@ -1,5 +1,6 @@
 class GameView
     attr_accessor :word_display, :hangman_array
+    
     def initialize(word = nil)
         @hangman_array = [
             ["    _____"],
